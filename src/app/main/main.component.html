@@ -1,0 +1,12 @@
+<div *ngIf="(artwork$ | async) as artwork"
+     class="row">
+  <div class="col">
+    <!-- Editor -->
+    <app-editor [artwork]="artwork"></app-editor>
+  </div>
+
+  <div class="col">
+    <!-- Info -->
+    <app-art-info [artwork]="artwork"></app-art-info>
+  </div>
+</div>
