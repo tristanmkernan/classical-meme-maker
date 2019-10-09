@@ -1,3 +1,11 @@
-<canvas #myCanvas
-        width="500px"
-        height="500px"></canvas>
+
+<div class="row">
+  <div class="col">
+    <app-editor-toolbar (addText)="handleAddText()"></app-editor-toolbar>
+
+    <!-- todo dynamic sizing -->
+    <canvas #myCanvas
+            width="500px"
+            height="500px"></canvas>
+  </div>
+</div>

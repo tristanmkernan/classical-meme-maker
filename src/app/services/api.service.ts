@@ -25,7 +25,7 @@ export class ApiService {
           results => {
             const objectId = results.objectIDs[Math.round(Math.random() * results.total)];
 
-            return this.http.get(
+            return this.http.get<IArtwork>(
               `https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectId}`
             );
           }

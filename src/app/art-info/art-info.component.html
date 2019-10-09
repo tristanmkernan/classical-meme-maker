@@ -1,1 +1,21 @@
-<p>art-info works!</p>
+
+<div class="list-group">
+  <div class="list-group-item">
+    <strong>Title:</strong> {{ artwork.title }}
+  </div>
+  <div class="list-group-item">
+    <strong>Date:</strong> {{ artwork.objectDate }}
+  </div>
+  <div class="list-group-item">
+    <strong>Artist:</strong> {{ artwork.artistDisplayName }} &bull; {{ artwork.artistDisplayBio }}
+  </div>
+  <div class="list-group-item">
+    <strong>Credit:</strong> {{ artwork.creditLine }}
+  </div>
+  <a class="list-group-item list-group-item-action"
+     target="_blank"
+     [href]="artwork.objectURL">
+    <fa-icon [icon]="['fas', 'external-link-alt']"></fa-icon>
+    External URL
+  </a>
+</div>
