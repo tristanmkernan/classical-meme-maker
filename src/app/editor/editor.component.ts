@@ -3,6 +3,9 @@ import { fabric } from 'fabric';
 import { IArtwork } from '../models';
 import { ReplaySubject, Subscription } from 'rxjs';
 import { TextChangeEventType } from './editor-toolbar/editor-toolbar.component';
+import { environment } from '../../environments/environment';
+import { ClipboardService } from 'ngx-clipboard';
+import { saveAs } from 'file-saver';
 
 const DEFAULT_TEXT_CONTENT = [
   'HE WASN\'T ALONE'
@@ -40,7 +43,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   private lastPosX = 0;
   private lastPosY = 0;
 
-  constructor() { }
+  constructor(private clipboardService: ClipboardService) { }
 
   ngOnInit() {
   }
@@ -50,19 +53,34 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     canvas.setDimensions({
       width: '100%',
-      height: '90%',
+      height: '500px',
     }, {cssOnly: true});
 
     this.subscription.add(
       this.artwork$.subscribe(
         artwork => {
-          fabric.Image.fromURL(artwork.primaryImage, image => {
-            image.scaleToWidth(this.canvas.getWidth(), false);
+          const url = `${environment.proxyUrl}${artwork.primaryImage}`;
 
+          const el = new Image();
+
+          el.crossOrigin = 'anonymous';
+          el.onload = () => {
+            const image = new fabric.Image(el);
+            image.scaleToWidth(this.canvas.getWidth(), false);
             canvas.setBackgroundImage(image, () => {
               canvas.requestRenderAll();
             });
-          });
+          };
+
+          el.src = url;
+
+          // fabric.Image.fromURL(url, image => {
+          //   image.scaleToWidth(this.canvas.getWidth(), false);
+          //
+          //   canvas.setBackgroundImage(image, () => {
+          //     canvas.requestRenderAll();
+          //   });
+          // });
         }
       )
     );
@@ -117,6 +135,12 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       this.isDragging = false;
       canvas.selection = true;
       canvas.requestRenderAll();
+
+      // Reset object coords to fix bug where clickable area does not match object position
+      // https://github.com/fabricjs/fabric.js/wiki/Fabric-gotchas
+      for (const obj of canvas.getObjects()) {
+        obj.setCoords();
+      }
     });
 
   }
@@ -160,10 +184,14 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleCopy() {
-    console.log(this.canvas.toDataURL());
+    this.clipboardService.copyFromContent(this.canvas.toDataURL());
   }
 
   handleSave() {
-    console.log(this.canvas.toDataURL());
+    this.canvas.getElement().toBlob(
+      blob => {
+        saveAs(blob, 'meme.png');
+      }
+    );
   }
 }

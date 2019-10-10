@@ -17,6 +17,7 @@ import { EditorToolbarComponent } from './editor/editor-toolbar/editor-toolbar.c
 
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { far } from '@fortawesome/free-regular-svg-icons';
     AppRoutingModule,
     HttpClientModule,
     NgbModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ClipboardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

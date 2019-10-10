@@ -6,3 +6,7 @@
   font-family: Impact;
   src: url("/assets/fonts/impact.ttf") format("truetype");
 }
+
+.canvas-container {
+  border: 1px solid #aaa;
+}
