@@ -1,0 +1,9 @@
+#info-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#loading-row {
+  margin-top: 2rem;
+}

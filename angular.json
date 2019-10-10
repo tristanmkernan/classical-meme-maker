@@ -26,7 +26,10 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/fabric/dist/fabric.min.js",
+              "node_modules/fontfaceobserver/fontfaceobserver.js"
+            ]
           },
           "configurations": {
             "production": {
