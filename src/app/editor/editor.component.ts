@@ -142,13 +142,24 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   handleAddText() {
     const randomQuote = DEFAULT_TEXT_CONTENT[Math.floor(Math.random() * DEFAULT_TEXT_CONTENT.length)];
+    let coords = {};
+
+    if (this.canvas.vptCoords) {
+      coords = {
+        left: this.canvas.vptCoords.tl.x,
+        top: this.canvas.vptCoords.tl.y,
+      };
+    }
+
+    const itext = new fabric.IText(randomQuote, {
+      fontFamily: 'Impact',
+      stroke: '#c3bfbf',
+      strokeWidth: 2,
+      ...coords
+    });
 
     this.canvas.add(
-      new fabric.IText(randomQuote, {
-        fontFamily: 'Impact',
-        stroke: '#c3bfbf',
-        strokeWidth: 2
-      })
+      itext
     );
   }
 
