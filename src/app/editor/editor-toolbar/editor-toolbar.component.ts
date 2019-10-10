@@ -1,4 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+
+export enum TextChangeEventType {
+  BOLD,
+  ITALIC,
+  DELETE
+}
 
 @Component({
   selector: 'app-editor-toolbar',
@@ -10,6 +16,18 @@ export class EditorToolbarComponent implements OnInit {
   @Output()
   public addText = new EventEmitter();
 
+  @Output()
+  public copy = new EventEmitter();
+
+  @Output()
+  public save = new EventEmitter();
+
+  @Output()
+  public textChange = new EventEmitter<TextChangeEventType>();
+
+  @Input()
+  public showTextOptions = false;
+
   constructor() { }
 
   ngOnInit() {
@@ -19,4 +37,23 @@ export class EditorToolbarComponent implements OnInit {
     this.addText.emit();
   }
 
+  handleCopy() {
+    this.copy.emit();
+  }
+
+  handleSave() {
+    this.save.emit();
+  }
+
+  handleTextBold() {
+    this.textChange.emit(TextChangeEventType.BOLD);
+  }
+
+  handleTextItalic() {
+    this.textChange.emit(TextChangeEventType.ITALIC);
+  }
+
+  handleTextDelete() {
+    this.textChange.emit(TextChangeEventType.DELETE);
+  }
 }

@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { fabric } from 'fabric';
 import { IArtwork } from '../models';
-import { ReplaySubject, Subject, Subscription } from 'rxjs';
+import { ReplaySubject, Subscription } from 'rxjs';
+import { TextChangeEventType } from './editor-toolbar/editor-toolbar.component';
 
 const DEFAULT_TEXT_CONTENT = [
   'HE WASN\'T ALONE'
@@ -22,10 +23,22 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.artwork$.next(artwork);
   }
 
+  public get hasSelectedTextObject(): boolean {
+    if (this.canvas) {
+      return !!this.canvas.getActiveObject();
+    }
+
+    return false;
+  }
+
   private artwork$: ReplaySubject<IArtwork> = new ReplaySubject<IArtwork>();
   private subscription: Subscription = new Subscription();
 
   private canvas: fabric.Canvas;
+
+  private isDragging = false;
+  private lastPosX = 0;
+  private lastPosY = 0;
 
   constructor() { }
 
@@ -33,29 +46,79 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.canvas = new fabric.Canvas(this.myCanvas.nativeElement);
+    const canvas = this.canvas = new fabric.Canvas(this.myCanvas.nativeElement);
 
-    // create a rectangle object
-    const rect = new fabric.Rect({
-      left: 100,
-      top: 100,
-      fill: 'red',
-      width: 20,
-      height: 20
-    });
-
-    // "add" rectangle onto canvas
-    this.canvas.add(rect);
+    canvas.setDimensions({
+      width: '100%',
+      height: '90%',
+    }, {cssOnly: true});
 
     this.subscription.add(
       this.artwork$.subscribe(
         artwork => {
           fabric.Image.fromURL(artwork.primaryImage, image => {
-            this.canvas.add(image);
+            image.scaleToWidth(this.canvas.getWidth(), false);
+
+            canvas.setBackgroundImage(image, () => {
+              canvas.requestRenderAll();
+            });
           });
         }
       )
     );
+
+    /*
+     * Zoom and Pan
+     * http://fabricjs.com/fabric-intro-part-5#pan_zoom
+     */
+
+    canvas.on('mouse:wheel', (opt: any) => {
+      const delta = -opt.e.deltaY;
+      let zoom = canvas.getZoom();
+
+      zoom = zoom + (delta / 50);
+
+      if (zoom > 20) {
+        zoom = 20;
+      }
+
+      if (zoom < 0.01) {
+        zoom = 0.01;
+      }
+
+      canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY } as any, zoom);
+      opt.e.preventDefault();
+      opt.e.stopPropagation();
+    });
+
+    canvas.on('mouse:down', (opt: any) => {
+      const evt = opt.e;
+
+      if (evt.shiftKey === true) {
+        this.isDragging = true;
+        canvas.selection = false;
+        this.lastPosX = evt.clientX;
+        this.lastPosY = evt.clientY;
+      }
+    });
+
+    canvas.on('mouse:move', (opt: any) => {
+      if (this.isDragging) {
+        const e = opt.e;
+        canvas.viewportTransform[4] += e.clientX - this.lastPosX;
+        canvas.viewportTransform[5] += e.clientY - this.lastPosY;
+        canvas.requestRenderAll();
+        this.lastPosX = e.clientX;
+        this.lastPosY = e.clientY;
+      }
+    });
+
+    canvas.on('mouse:up', _ => {
+      this.isDragging = false;
+      canvas.selection = true;
+      canvas.requestRenderAll();
+    });
+
   }
 
   ngOnDestroy() {
@@ -66,7 +129,41 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     const randomQuote = DEFAULT_TEXT_CONTENT[Math.floor(Math.random() * DEFAULT_TEXT_CONTENT.length)];
 
     this.canvas.add(
-      new fabric.IText(randomQuote)
+      new fabric.IText(randomQuote, {
+        fontFamily: 'Impact',
+        stroke: '#c3bfbf',
+        strokeWidth: 2
+      })
     );
+  }
+
+  handleTextChange(type: TextChangeEventType) {
+    const textObj: fabric.IText = this.canvas.getActiveObject() as fabric.IText;
+
+    if (type === TextChangeEventType.BOLD) {
+      if (textObj.fontWeight === 'bold') {
+        textObj.fontWeight = 'normal';
+      } else {
+        textObj.fontWeight = 'bold';
+      }
+    } else if (type === TextChangeEventType.ITALIC) {
+      if (textObj.fontStyle === 'italic') {
+        textObj.fontStyle = 'normal';
+      } else {
+        textObj.fontStyle = 'italic';
+      }
+    } else {
+      this.canvas.remove(textObj);
+    }
+
+    this.canvas.requestRenderAll();
+  }
+
+  handleCopy() {
+    console.log(this.canvas.toDataURL());
+  }
+
+  handleSave() {
+    console.log(this.canvas.toDataURL());
   }
 }

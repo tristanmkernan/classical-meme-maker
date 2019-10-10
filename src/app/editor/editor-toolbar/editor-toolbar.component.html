@@ -9,25 +9,37 @@
       <fa-icon [icon]="['fas', 'quote-left']"></fa-icon>
     </button>
   </div>
-  <div class="btn-group mr-2" role="group">
-    <button type="button" class="btn btn-secondary">
-      <fa-icon [icon]="['fas', 'bold']"></fa-icon>
+  <div *ngIf="showTextOptions"
+       class="btn-group mr-2"
+       role="group">
+    <button type="button"
+            class="btn btn-secondary"
+            (click)="handleTextBold()">
+    <fa-icon [icon]="['fas', 'bold']"></fa-icon>
     </button>
-    <button type="button" class="btn btn-secondary">
-      <fa-icon [icon]="['fas', 'italic']"></fa-icon>
+    <button type="button"
+            class="btn btn-secondary"
+            (click)="handleTextItalic()">
+    <fa-icon [icon]="['fas', 'italic']"></fa-icon>
     </button>
-    <button type="button" class="btn btn-secondary">
-      <fa-icon [icon]="['fas', 'trash']"></fa-icon>
+    <button type="button"
+            class="btn btn-secondary"
+            (click)="handleTextDelete()">
+    <fa-icon [icon]="['fas', 'trash']"></fa-icon>
     </button>
   </div>
   <div class="btn-group ml-auto" role="group">
-    <button type="button" class="btn btn-secondary">
+    <button type="button"
+            class="btn btn-secondary"
+            (click)="handleSave()">
       <fa-icon [icon]="['fas', 'file-download']"></fa-icon>
       <span>
         Save
       </span>
     </button>
-    <button type="button" class="btn btn-secondary">
+    <button type="button"
+            class="btn btn-secondary"
+            (click)="handleCopy()">
       <fa-icon [icon]="['fas', 'copy']"></fa-icon>
       <span>
         Copy

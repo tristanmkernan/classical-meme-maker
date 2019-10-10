@@ -1,11 +1,19 @@
 
 <div class="row">
   <div class="col">
-    <app-editor-toolbar (addText)="handleAddText()"></app-editor-toolbar>
+    <app-editor-toolbar [showTextOptions]="hasSelectedTextObject"
+                        (addText)="handleAddText()"
+                        (textChange)="handleTextChange($event)"
+                        (save)="handleSave()"
+                        (copy)="handleCopy()"></app-editor-toolbar>
 
     <!-- todo dynamic sizing -->
     <canvas #myCanvas
             width="500px"
             height="500px"></canvas>
+
+    <p class="text-muted">
+      To pan, hold shift and click and drag. To zoom, use the mouse wheel.
+    </p>
   </div>
 </div>

@@ -27,6 +27,7 @@
     "@ng-bootstrap/ng-bootstrap": "^5.1.1",
     "bootstrap": "^4.3.1",
     "fabric": "^3.4.0",
+    "fontfaceobserver": "^2.1.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
@@ -37,6 +38,7 @@
     "@angular/compiler-cli": "~8.2.8",
     "@angular/language-service": "~8.2.8",
     "@types/fabric": "^3.0.2",
+    "@types/fontfaceobserver": "0.0.6",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
