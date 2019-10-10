@@ -4,7 +4,6 @@ import { IArtwork } from '../models';
 import { ReplaySubject, Subscription } from 'rxjs';
 import { TextChangeEventType } from './editor-toolbar/editor-toolbar.component';
 import { environment } from '../../environments/environment';
-import { ClipboardService } from 'ngx-clipboard';
 import { saveAs } from 'file-saver';
 
 const DEFAULT_TEXT_CONTENT = [
@@ -43,7 +42,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   private lastPosX = 0;
   private lastPosY = 0;
 
-  constructor(private clipboardService: ClipboardService) { }
+  constructor() { }
 
   ngOnInit() {
   }
@@ -73,14 +72,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
           };
 
           el.src = url;
-
-          // fabric.Image.fromURL(url, image => {
-          //   image.scaleToWidth(this.canvas.getWidth(), false);
-          //
-          //   canvas.setBackgroundImage(image, () => {
-          //     canvas.requestRenderAll();
-          //   });
-          // });
         }
       )
     );
@@ -184,7 +175,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleCopy() {
-    this.clipboardService.copyFromContent(this.canvas.toDataURL());
+    window.open(this.canvas.toDataURL());
   }
 
   handleSave() {

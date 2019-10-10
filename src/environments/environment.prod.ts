@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  proxyUrl: 'http://localhost:8080/'
+  proxyUrl: 'https://cors-anywhere.tmk.name/'
 };
