@@ -1,11 +1,11 @@
 <div *ngIf="(artwork$ | async) as artwork; else loader"
      class="row">
-  <div class="col">
+  <div class="col-12 col-lg-6">
     <!-- Editor -->
     <app-editor [artwork]="artwork"></app-editor>
   </div>
 
-  <div class="col" id="info-col">
+  <div class="col-12 col-lg-6" id="info-col">
     <!-- Info -->
     <app-art-info [artwork]="artwork"></app-art-info>
   </div>

@@ -7,7 +7,8 @@ import { environment } from '../../environments/environment';
 import { saveAs } from 'file-saver';
 
 const DEFAULT_TEXT_CONTENT = [
-  'HE WASN\'T ALONE'
+  'SAMPLE TEXT',
+  '420 BLAZE IT',
 ];
 
 @Component({
