@@ -161,6 +161,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.canvas.add(
       itext
     );
+
+    this.canvas.setActiveObject(itext);
   }
 
   handleTextChange(type: TextChangeEventType) {
@@ -178,8 +180,12 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       } else {
         textObj.fontStyle = 'italic';
       }
-    } else {
+    } else if (type === TextChangeEventType.DELETE) {
       this.canvas.remove(textObj);
+    } else if (type === TextChangeEventType.SIZE_UP) {
+      textObj.fontSize += 10;
+    } else if (type === TextChangeEventType.SIZE_DOWN) {
+      textObj.fontSize -= 10;
     }
 
     this.canvas.requestRenderAll();

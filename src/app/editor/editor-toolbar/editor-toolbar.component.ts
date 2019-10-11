@@ -3,7 +3,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export enum TextChangeEventType {
   BOLD,
   ITALIC,
-  DELETE
+  DELETE,
+  SIZE_UP,
+  SIZE_DOWN
 }
 
 @Component({
@@ -55,5 +57,13 @@ export class EditorToolbarComponent implements OnInit {
 
   handleTextDelete() {
     this.textChange.emit(TextChangeEventType.DELETE);
+  }
+
+  handleTextSizeUp() {
+    this.textChange.emit(TextChangeEventType.SIZE_UP);
+  }
+
+  handleTextSizeDown() {
+    this.textChange.emit(TextChangeEventType.SIZE_DOWN);
   }
 }

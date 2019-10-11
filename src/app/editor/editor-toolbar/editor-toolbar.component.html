@@ -6,7 +6,7 @@
     <button type="button"
             class="btn btn-secondary"
             (click)="handleAddText()">
-      <fa-icon [icon]="['fas', 'quote-left']"></fa-icon>
+      <fa-icon [icon]="['fas', 'pen']"></fa-icon>
     </button>
   </div>
   <div *ngIf="showTextOptions"
@@ -15,17 +15,27 @@
     <button type="button"
             class="btn btn-secondary"
             (click)="handleTextBold()">
-    <fa-icon [icon]="['fas', 'bold']"></fa-icon>
+      <fa-icon [icon]="['fas', 'bold']"></fa-icon>
     </button>
     <button type="button"
             class="btn btn-secondary"
             (click)="handleTextItalic()">
-    <fa-icon [icon]="['fas', 'italic']"></fa-icon>
+      <fa-icon [icon]="['fas', 'italic']"></fa-icon>
+    </button>
+    <button type="button"
+            class="btn btn-secondary"
+            (click)="handleTextSizeUp()">
+      <fa-icon [icon]="['fas', 'sort-alpha-up']"></fa-icon>
+    </button>
+    <button type="button"
+            class="btn btn-secondary"
+            (click)="handleTextSizeDown()">
+      <fa-icon [icon]="['fas', 'sort-alpha-down']"></fa-icon>
     </button>
     <button type="button"
             class="btn btn-secondary"
             (click)="handleTextDelete()">
-    <fa-icon [icon]="['fas', 'trash']"></fa-icon>
+      <fa-icon [icon]="['fas', 'eraser']"></fa-icon>
     </button>
   </div>
   <div class="btn-group ml-auto" role="group">
